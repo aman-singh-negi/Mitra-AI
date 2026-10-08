@@ -141,3 +141,33 @@ Required Vercel environment variables:
 - All AI operations go through server-side service
 - RLS policies are enforced at the database level
 - The application uses real data - no mock/fake data in production
+
+## Development Workflow
+
+**Important:** This repository is connected to Vercel for automatic deployment. When making changes:
+
+1. Make your code changes
+2. Automatically commit and push to GitHub (Devin will handle this)
+3. Vercel will automatically detect the push and deploy the update
+4. Monitor deployment at https://vercel.com
+
+**Commit Message Format:**
+```
+type: description
+
+- change 1
+- change 2
+
+Generated with [Devin](https://devin.ai)
+
+Co-Authored-By: Devin <158243242+devin-ai-integration[bot]@users.noreply.github.com>
+```
+
+**Commit Types:**
+- `feat:` New feature
+- `fix:` Bug fix
+- `refactor:` Code refactoring
+- `docs:` Documentation changes
+- `style:` Code style changes
+- `test:` Adding or updating tests
+- `chore:` Maintenance tasks
