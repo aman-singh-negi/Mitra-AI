@@ -25,7 +25,11 @@ Copy `.env.example` to `.env.local` and configure the following variables:
 
 ### Google Gemini
 - `GEMINI_API_KEY`: Your Google Gemini API key (server-side only, keep secret)
-- `GEMINI_MODEL`: The Gemini model to use (e.g., gemini-2.0-flash-exp)
+- `GEMINI_MODEL`: The Gemini model to use (e.g., gemini-3.8-flash)
+
+### Resend
+- `RESEND_API_KEY`: Your Resend API key (server-side only, keep secret)
+- `RESEND_FROM_EMAIL`: Your Resend from email address (server-side only, keep secret)
 
 ### Environment
 - `NODE_ENV`: Set to 'development', 'production', or 'test'
@@ -132,6 +136,8 @@ Required Vercel environment variables:
 - `SUPABASE_SERVICE_ROLE_KEY`
 - `GEMINI_API_KEY`
 - `GEMINI_MODEL`
+- `RESEND_API_KEY`
+- `RESEND_FROM_EMAIL`
 - `NODE_ENV` (set to production)
 
 ## Important Notes
