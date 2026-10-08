@@ -1,0 +1,1928 @@
+PROJECT: MITRA
+
+Build MITRA from the ground up as a production-quality AI-powered personal
+productivity and life-management platform.
+
+MITRA stands for a Personal AI Companion.
+
+The goal is NOT to build a simple Todo application or a chatbot.
+
+MITRA should eventually understand the user's tasks, projects, goals, habits,
+notes, calendar, documents and behavioral patterns and use that information
+to provide personalized planning, predictions, recommendations and
+decision support.
+
+The core product loop is:
+
+CAPTURE
+    ↓
+ORGANIZE
+    ↓
+UNDERSTAND
+    ↓
+PREDICT
+    ↓
+SIMULATE
+    ↓
+DECIDE
+    ↓
+COACH
+
+
+===========================================================
+1. DEVELOPMENT PRINCIPLES
+===========================================================
+
+Build MITRA as a real software product, not as a prototype with fake data.
+
+Rules:
+
+1. Do not create fake functionality and present it as functional.
+2. Do not hard-code AI responses.
+3. Do not hard-code analytics.
+4. Do not expose API keys or secrets.
+5. Do not put secrets into GitHub.
+6. Do not allow the AI model direct unrestricted database access.
+7. All AI actions must go through controlled server-side tools/functions.
+8. Every feature must have proper loading, error and empty states.
+9. Every database table containing user data must enforce user isolation.
+10. Use Row Level Security where applicable.
+11. Use migrations for database changes.
+12. Keep the code modular and maintainable.
+13. Avoid unnecessary microservices.
+14. Avoid unnecessary infrastructure.
+15. Do not add external integrations until the core application is stable.
+16. Do not use mock data in production-facing functionality.
+17. If an advanced feature cannot yet be implemented reliably, create the
+    architecture/interface for it but clearly mark it as future functionality.
+18. Test every major feature before moving to the next phase.
+19. After each major phase, ensure the application builds successfully.
+20. Commit meaningful changes to GitHub regularly.
+
+
+===========================================================
+2. CURRENT INFRASTRUCTURE
+===========================================================
+
+Use these services:
+
+SOURCE CONTROL:
+GitHub
+
+AI:
+Google Gemini API
+
+DATABASE:
+Supabase PostgreSQL
+
+DEPLOYMENT:
+Vercel
+
+
+The project must remain compatible with free-tier development as much as
+reasonably possible.
+
+Do not introduce paid infrastructure unless absolutely necessary.
+
+
+===========================================================
+3. TECHNOLOGY STACK
+===========================================================
+
+Frontend:
+
+- Next.js
+- React
+- TypeScript
+- Tailwind CSS
+- modern component architecture
+- responsive design
+
+Use the Next.js App Router.
+
+Backend:
+
+Use Next.js server-side functionality/API routes/server actions where
+appropriate.
+
+Do NOT create a separate backend server unless a genuine architectural need
+appears.
+
+Database:
+
+- PostgreSQL
+- Supabase
+- pgvector when required for semantic search/RAG
+
+Authentication:
+
+- Supabase Auth
+
+Storage:
+
+- Supabase Storage
+
+AI:
+
+- Google Gemini API
+- server-side AI service abstraction
+
+Deployment:
+
+- Vercel
+
+Source control:
+
+- GitHub
+
+
+===========================================================
+4. HIGH-LEVEL ARCHITECTURE
+===========================================================
+
+Use this architecture:
+
+                     USER
+                       |
+                       v
+                MITRA FRONTEND
+                Next.js / React
+                       |
+                       v
+                 SERVER LAYER
+                       |
+          +------------+-------------+
+          |            |             |
+          v            v             v
+       DATABASE       AI SERVICE    STORAGE
+       Supabase       Gemini        Supabase
+       PostgreSQL     API           Storage
+          |
+          v
+     KNOWLEDGE LAYER
+          |
+          v
+     ANALYTICS / ML
+          |
+          v
+    RECOMMENDATION ENGINE
+          |
+          v
+     PERSONAL AI COACH
+
+
+Keep the AI service isolated:
+
+frontend
+    ↓
+server API
+    ↓
+AI service
+    ↓
+Gemini
+
+Never call Gemini directly from client-side components.
+
+
+===========================================================
+5. ENVIRONMENT VARIABLES
+===========================================================
+
+Create:
+
+.env.example
+
+Never place real credentials in it.
+
+Expected variables should include approximately:
+
+NEXT_PUBLIC_APP_URL=
+
+GEMINI_API_KEY=
+GEMINI_MODEL=
+
+NEXT_PUBLIC_SUPABASE_URL=
+NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=
+
+DATABASE_URL=
+
+SUPABASE_SERVICE_ROLE_KEY=
+
+The exact environment variable names may be adjusted if current official
+Supabase/Gemini SDK conventions require it.
+
+Important:
+
+- Client-safe variables must use NEXT_PUBLIC_ only when actually safe.
+- Gemini API key must remain server-side.
+- DATABASE_URL must remain server-side.
+- SUPABASE_SERVICE_ROLE_KEY must remain server-side.
+- Never expose service-role credentials to the browser.
+- Never commit .env.local.
+- Never commit API keys.
+
+Create a strong .gitignore.
+
+
+===========================================================
+6. INITIAL PROJECT SETUP
+===========================================================
+
+First establish the foundation before implementing business features.
+
+Create:
+
+- Next.js application
+- TypeScript configuration
+- Tailwind
+- linting
+- formatting
+- environment validation
+- error handling
+- logging
+- reusable UI system
+- Supabase clients
+- server/client separation
+- Gemini service
+- database connection
+- basic health-check endpoint
+- testing infrastructure
+
+The application must run with:
+
+npm run dev
+
+and build successfully with:
+
+npm run build
+
+
+===========================================================
+7. APPLICATION STRUCTURE
+===========================================================
+
+Use a clean architecture.
+
+Suggested structure:
+
+app/
+  (auth)/
+  (dashboard)/
+  api/
+  ...
+
+components/
+  ui/
+  layout/
+  dashboard/
+  tasks/
+  projects/
+  goals/
+  habits/
+  notes/
+  calendar/
+  analytics/
+  ai/
+
+lib/
+  supabase/
+  ai/
+  auth/
+  db/
+  validation/
+  analytics/
+  recommendations/
+  utils/
+
+server/
+  services/
+  repositories/
+  ai/
+  actions/
+
+database/
+  migrations/
+  seeds/
+
+types/
+
+tests/
+
+public/
+
+
+Do not blindly follow this structure if a better Next.js architecture is
+appropriate, but preserve separation of concerns.
+
+
+===========================================================
+8. DESIGN DIRECTION
+===========================================================
+
+MITRA should feel like a premium modern AI product.
+
+The provided MITRA product blueprint is the visual/product reference.
+
+The design should communicate:
+
+- intelligence
+- calm
+- organization
+- premium software
+- personalization
+- trust
+
+Use:
+
+- dark/light theme
+- clean typography
+- subtle animations
+- responsive layout
+- polished cards
+- clear visual hierarchy
+- excellent empty states
+- skeleton loading
+- meaningful micro-interactions
+
+Avoid:
+
+- excessive gradients
+- excessive glassmorphism
+- visual clutter
+- giant meaningless dashboards
+- generic admin-dashboard appearance
+- unnecessary animations
+
+The interface must prioritize usability over decoration.
+
+
+===========================================================
+9. GLOBAL APPLICATION SHELL
+===========================================================
+
+Create a persistent application shell.
+
+Sidebar:
+
+MITRA
+
+Dashboard
+Inbox
+Calendar
+Tasks
+Projects
+Notes
+Goals
+Habits
+Analytics
+Knowledge
+AI Companion
+Settings
+
+Sidebar should support collapsing.
+
+Top bar:
+
+- global search
+- notifications
+- AI access
+- profile menu
+
+The application should have a consistent navigation system.
+
+
+===========================================================
+10. AUTHENTICATION
+===========================================================
+
+Implement Supabase Auth.
+
+Required:
+
+- Sign up
+- Login
+- Logout
+- Password reset
+- Protected routes
+- Session persistence
+- User profile
+- User preferences
+
+Every user's data must be isolated.
+
+User A must never be able to access User B's tasks,
+projects, notes, goals or other data.
+
+Use database Row Level Security.
+
+Do not rely only on frontend checks for authorization.
+
+
+===========================================================
+11. USER PROFILE
+===========================================================
+
+Create a user profile/preferences system.
+
+Fields/preferences can include:
+
+- name
+- timezone
+- preferred working hours
+- notification preferences
+- AI preferences
+- theme
+- default task settings
+- productivity preferences
+
+Design this so additional personalization fields can be added later.
+
+
+===========================================================
+12. DASHBOARD
+===========================================================
+
+The dashboard is MITRA's command center.
+
+Display:
+
+TODAY
+
+- date
+- today's tasks
+- today's events
+- habits
+- goal progress
+- upcoming deadlines
+
+PRODUCTIVITY
+
+- tasks completed
+- completion rate
+- focus time
+- productivity trend
+
+UPCOMING
+
+- important deadlines
+- upcoming events
+- high-priority tasks
+
+AI INSIGHT
+
+Show personalized recommendations generated from real user data.
+
+Example:
+
+"Good morning.
+
+You have 5 tasks today and one deadline approaching tomorrow.
+
+MITRA recommends:
+1. Finish the project report first.
+2. Complete the 45-minute pending task before lunch.
+3. Move the low-priority documentation task to tomorrow."
+
+The content must come from actual application data.
+
+
+===========================================================
+13. TASK MANAGEMENT
+===========================================================
+
+Create complete task management.
+
+Task fields:
+
+- id
+- user_id
+- title
+- description
+- status
+- priority
+- due_date
+- estimated_duration
+- actual_duration
+- project_id
+- goal_id
+- created_at
+- updated_at
+- completed_at
+
+Optional future fields:
+
+- recurrence
+- tags
+- dependencies
+
+Statuses:
+
+TODO
+IN_PROGRESS
+COMPLETED
+CANCELLED
+
+Priorities:
+
+LOW
+MEDIUM
+HIGH
+URGENT
+
+Features:
+
+- create
+- edit
+- delete
+- complete
+- reopen
+- archive
+- search
+- filter
+- sort
+- recurring tasks
+- bulk operations
+
+Views:
+
+- list
+- kanban
+- calendar
+
+
+===========================================================
+14. PROJECT MANAGEMENT
+===========================================================
+
+Projects group related work.
+
+Fields:
+
+- id
+- user_id
+- name
+- description
+- status
+- priority
+- start_date
+- deadline
+- created_at
+- updated_at
+
+Features:
+
+- create
+- edit
+- delete
+- task association
+- project progress
+- project timeline
+- project analytics
+
+Calculate project progress from actual task state.
+
+Do not hard-code project percentages.
+
+
+===========================================================
+15. GOAL MANAGEMENT
+===========================================================
+
+Support long-term goals.
+
+Structure:
+
+GOAL
+ ↓
+MILESTONES
+ ↓
+PROJECTS
+ ↓
+TASKS
+
+
+Goal fields:
+
+- id
+- user_id
+- name
+- description
+- category
+- priority
+- target_date
+- status
+- progress
+
+Features:
+
+- create goals
+- milestones
+- connect projects
+- connect tasks
+- connect habits
+- progress tracking
+- target dates
+- goal health
+
+
+===========================================================
+16. HABIT TRACKER
+===========================================================
+
+Support recurring habits.
+
+Habit:
+
+- name
+- description
+- frequency
+- target
+- reminder
+- start_date
+- status
+
+Track:
+
+- completions
+- missed days
+- streak
+- completion rate
+- history
+
+Provide:
+
+- calendar view
+- streak display
+- completion heatmap
+
+
+===========================================================
+17. NOTES / SECOND BRAIN
+===========================================================
+
+Create a note-taking system.
+
+Features:
+
+- create note
+- edit note
+- delete note
+- search
+- tags
+- categories
+- rich text/markdown
+- attachments
+- related notes
+
+Notes can link to:
+
+- tasks
+- projects
+- goals
+- habits
+- documents
+
+The architecture should support semantic search later.
+
+
+===========================================================
+18. CALENDAR
+===========================================================
+
+Create an internal calendar.
+
+Support:
+
+- create event
+- edit event
+- delete event
+- day view
+- week view
+- month view
+- duration
+- conflict detection
+
+The calendar must eventually support AI scheduling.
+
+Do NOT integrate Google Calendar yet unless explicitly requested.
+
+
+===========================================================
+19. GLOBAL SEARCH
+===========================================================
+
+Implement global search across:
+
+- tasks
+- projects
+- goals
+- habits
+- notes
+- calendar events
+- documents
+
+Start with reliable database search.
+
+Do not pretend it is semantic search.
+
+Create the architecture so semantic search can be added later.
+
+
+===========================================================
+20. PERSONAL KNOWLEDGE GRAPH
+===========================================================
+
+MITRA's major differentiator is the personal knowledge graph.
+
+Represent relationships such as:
+
+Task
+  belongs_to
+Project
+
+Task
+  contributes_to
+Goal
+
+Habit
+  supports
+Goal
+
+Note
+  related_to
+Project
+
+Document
+  related_to
+Project
+
+Goal
+  contains
+Milestone
+
+Create a knowledge graph data model.
+
+Eventually provide a visual graph interface.
+
+The graph should be based on actual database relationships.
+
+
+===========================================================
+21. ACTIVITY / BEHAVIOR DATA
+===========================================================
+
+Create an activity/event logging system.
+
+Examples:
+
+- task_created
+- task_started
+- task_completed
+- task_delayed
+- task_rescheduled
+- habit_completed
+- goal_updated
+- focus_session_started
+- focus_session_completed
+
+Store:
+
+- user
+- event type
+- timestamp
+- relevant entity
+- metadata
+
+Avoid collecting unnecessary sensitive information.
+
+
+===========================================================
+22. ANALYTICS ENGINE
+===========================================================
+
+Build analytics from real activity data.
+
+Calculate:
+
+- task completion rate
+- overdue rate
+- average completion time
+- task delay rate
+- project progress
+- goal progress
+- habit consistency
+- productivity trends
+- focus trends
+
+Create:
+
+Daily analytics
+Weekly analytics
+Monthly analytics
+
+Use charts where appropriate.
+
+Never generate random productivity scores.
+
+
+===========================================================
+23. AI SERVICE
+===========================================================
+
+Create a centralized Gemini service.
+
+Example conceptual API:
+
+generateText()
+generateStructuredResponse()
+analyzeUserData()
+generateRecommendation()
+answerUserQuestion()
+
+Do not scatter Gemini API calls throughout the application.
+
+Use structured output whenever possible.
+
+The AI service must have:
+
+- error handling
+- retry/backoff
+- timeout handling
+- rate-limit handling
+- logging without exposing secrets
+- model configuration through environment variables
+
+
+===========================================================
+24. AI CONTEXT RETRIEVAL
+===========================================================
+
+When a user asks MITRA a question:
+
+1. Determine intent.
+2. Identify required MITRA data.
+3. Retrieve only necessary data.
+4. Build structured context.
+5. Send context to Gemini.
+6. Validate the response.
+7. Return the response.
+
+Example:
+
+User:
+"What should I work on today?"
+
+Do NOT simply send this sentence to Gemini.
+
+Instead retrieve:
+
+- today's tasks
+- deadlines
+- projects
+- goals
+- calendar
+- priorities
+- historical completion patterns if available
+
+Then provide the context to the model.
+
+
+===========================================================
+25. PERSONAL AI COMPANION
+===========================================================
+
+Create an AI chat interface.
+
+Example questions:
+
+"What should I do today?"
+
+"Which task should I prioritize?"
+
+"Why am I falling behind?"
+
+"How am I progressing toward my goals?"
+
+"What projects are at risk?"
+
+"Summarize my week."
+
+"What are my productive hours?"
+
+"Can I finish this project before Friday?"
+
+The AI should answer using actual MITRA data.
+
+
+===========================================================
+26. AI ACTIONS
+===========================================================
+
+Eventually allow the AI to perform controlled actions.
+
+Examples:
+
+"Move my low priority tasks to tomorrow."
+
+"Create a task to finish my project report."
+
+"Schedule two hours for this project."
+
+Architecture:
+
+USER
+ ↓
+AI
+ ↓
+INTENT
+ ↓
+STRUCTURED TOOL CALL
+ ↓
+VALIDATION
+ ↓
+CONFIRMATION IF REQUIRED
+ ↓
+DATABASE ACTION
+
+The LLM must NEVER directly execute arbitrary SQL.
+
+Use explicit tools/functions such as:
+
+createTask()
+updateTask()
+moveTask()
+createEvent()
+updateGoal()
+etc.
+
+
+===========================================================
+27. RECOMMENDATION ENGINE
+===========================================================
+
+Create a deterministic recommendation engine first.
+
+Do not pretend this is machine learning.
+
+Consider:
+
+- priority
+- deadline
+- estimated duration
+- project importance
+- goal importance
+- dependencies
+- current workload
+- calendar availability
+- historical completion behavior
+
+Example:
+
+Priority Score =
+deadline weight
++ priority weight
++ goal weight
++ project weight
++ dependency weight
++ risk weight
+
+Make weights configurable.
+
+Later this can evolve into an ML model.
+
+
+===========================================================
+28. PREDICTION ENGINE
+===========================================================
+
+Implement basic explainable predictions.
+
+Task completion prediction:
+
+Can the user finish a task before its deadline?
+
+Deadline risk:
+
+LOW
+MEDIUM
+HIGH
+CRITICAL
+
+Goal achievement:
+
+Estimate whether current progress is sufficient.
+
+Every prediction should include an explanation.
+
+Example:
+
+"High deadline risk.
+
+There are approximately 8 hours of estimated work remaining,
+2 days until the deadline, and your recent completion rate is 62%."
+
+
+===========================================================
+29. WHAT-IF SIMULATION
+===========================================================
+
+Create a simulation engine.
+
+Examples:
+
+"What if I move Project X to Friday?"
+
+"What if I postpone this task by 2 days?"
+
+"What happens if I reduce study time by 2 hours?"
+
+The simulation should calculate effects on:
+
+- workload
+- deadlines
+- project progress
+- goals
+- schedule conflicts
+
+Example:
+
+Scenario:
+Move Project X → Friday
+
+Impact:
+Workload: +18%
+Deadline risk: +7%
+Goal progress: -3%
+
+Recommendation:
+Keep Project X today and move Task Y instead.
+
+The first version may use deterministic calculations.
+
+Do not use an LLM as the mathematical simulation engine.
+
+
+===========================================================
+30. DOCUMENT INTELLIGENCE
+===========================================================
+
+Implement after the core application is stable.
+
+Support:
+
+- PDF
+- DOCX
+- TXT
+- images where practical
+
+Features:
+
+- upload
+- text extraction
+- summarization
+- search
+- document Q&A
+- tagging
+- linking documents to projects/notes
+
+Architecture should support RAG.
+
+Use PostgreSQL + pgvector when appropriate.
+
+Do not introduce a separate vector database unless there is a real requirement.
+
+
+===========================================================
+31. SEMANTIC SEARCH / RAG
+===========================================================
+
+Create an abstraction:
+
+EmbeddingProvider
+
+so embeddings are not hard-coded to one vendor.
+
+Architecture:
+
+DOCUMENT/NOTE
+ ↓
+CHUNK
+ ↓
+EMBEDDING
+ ↓
+VECTOR DATABASE
+ ↓
+SIMILARITY SEARCH
+ ↓
+RELEVANT CONTEXT
+ ↓
+GEMINI
+ ↓
+ANSWER
+
+Use pgvector in Supabase when implementing this.
+
+Do not implement this before the core application is stable.
+
+
+===========================================================
+32. NOTIFICATIONS
+===========================================================
+
+Support:
+
+- task deadlines
+- overdue tasks
+- calendar events
+- habit reminders
+- goal warnings
+- AI recommendations
+
+Avoid notification spam.
+
+Create notification preferences.
+
+
+===========================================================
+33. ANALYTICS UI
+===========================================================
+
+Create a polished analytics dashboard.
+
+Sections:
+
+PRODUCTIVITY
+- completion rate
+- task trends
+- focus time
+
+GOALS
+- progress
+- target achievement
+
+HABITS
+- streak
+- completion rate
+
+TIME
+- time distribution
+
+BEHAVIOR
+- recurring patterns
+
+Use actual data.
+
+
+===========================================================
+34. SETTINGS
+===========================================================
+
+Create settings pages for:
+
+Profile
+Preferences
+Notifications
+AI settings
+Appearance
+Data
+Security
+
+Data settings should eventually include:
+
+Export data
+Delete data
+
+
+===========================================================
+35. DATABASE
+===========================================================
+
+Design a normalized relational schema.
+
+Initial entities:
+
+users/profile
+user_preferences
+
+tasks
+task_dependencies
+
+projects
+
+goals
+goal_milestones
+
+habits
+habit_completions
+
+notes
+note_links
+
+calendar_events
+
+tags
+task_tags
+note_tags
+
+activity_logs
+
+notifications
+
+ai_conversations
+ai_messages
+
+documents
+document_chunks
+
+embeddings/vector data when required
+
+Do not create unnecessary tables.
+
+Use:
+
+- UUID primary keys where appropriate
+- foreign keys
+- indexes
+- timestamps
+- constraints
+- appropriate enums/check constraints
+
+Every user-owned entity must have a user ownership mechanism.
+
+
+===========================================================
+36. DATABASE SECURITY
+===========================================================
+
+Security is critical.
+
+Use Supabase Row Level Security.
+
+A user must only be able to read/write their own data.
+
+Test:
+
+User A cannot access User B data.
+
+Do not depend solely on UI restrictions.
+
+Server-side service-role access must only be used where absolutely necessary.
+
+
+===========================================================
+37. API DESIGN
+===========================================================
+
+Create clean server endpoints/actions for:
+
+/api/auth
+/api/tasks
+/api/projects
+/api/goals
+/api/habits
+/api/notes
+/api/calendar
+/api/search
+/api/analytics
+/api/ai
+/api/recommendations
+/api/predictions
+/api/simulations
+/api/notifications
+/api/documents
+
+Use:
+
+- validation
+- authentication
+- authorization
+- consistent errors
+- proper HTTP status codes
+
+Use a schema validation library such as Zod.
+
+
+===========================================================
+38. ERROR HANDLING
+===========================================================
+
+Every important operation must handle:
+
+- network failure
+- database failure
+- invalid input
+- authentication failure
+- authorization failure
+- Gemini failure
+- Gemini rate limits
+- timeout
+- malformed AI response
+- missing data
+
+Never expose stack traces or secrets to users.
+
+
+===========================================================
+39. AI FAILURE BEHAVIOR
+===========================================================
+
+If Gemini is unavailable:
+
+MITRA must still function as a normal productivity application.
+
+For example:
+
+Tasks:
+WORK
+
+Projects:
+WORK
+
+Goals:
+WORK
+
+Calendar:
+WORK
+
+Analytics:
+WORK
+
+AI:
+Show a graceful unavailable message.
+
+The application must NOT become unusable because the AI API is unavailable.
+
+
+===========================================================
+40. PERFORMANCE
+===========================================================
+
+Avoid unnecessary AI calls.
+
+Examples:
+
+Create task:
+NO AI call.
+
+Complete task:
+NO AI call.
+
+Calculate project progress:
+NO AI call.
+
+Sort by deadline:
+NO AI call.
+
+"Plan my day":
+AI call.
+
+"Why am I behind?":
+AI call.
+
+"Analyze my productivity":
+AI call.
+
+Cache appropriate analytics.
+
+Use pagination for large datasets.
+
+
+===========================================================
+41. RESPONSIVENESS
+===========================================================
+
+MITRA must work on:
+
+Desktop
+Tablet
+Mobile browser
+
+Prioritize desktop initially but do not create a desktop-only layout.
+
+
+===========================================================
+42. ACCESSIBILITY
+===========================================================
+
+Implement:
+
+- semantic HTML
+- keyboard navigation
+- accessible labels
+- focus states
+- sufficient contrast
+- reduced motion consideration
+
+
+===========================================================
+43. TESTING
+===========================================================
+
+Implement tests for:
+
+Authentication
+Database operations
+RLS
+Task CRUD
+Project CRUD
+Goal CRUD
+Habit tracking
+Notes
+Calendar
+Analytics
+AI service
+Recommendation engine
+Prediction engine
+Simulation engine
+
+At minimum, create unit tests for business logic and integration tests
+for critical database/API flows.
+
+Also perform basic end-to-end testing of critical user journeys.
+
+
+===========================================================
+44. CRITICAL USER JOURNEYS
+===========================================================
+
+Test this complete flow:
+
+1. User signs up.
+2. User logs in.
+3. User creates a goal.
+4. User creates a project.
+5. User creates tasks.
+6. Tasks appear on dashboard.
+7. User completes tasks.
+8. Project progress updates.
+9. Goal progress updates.
+10. Activity is recorded.
+11. Analytics update.
+12. User asks MITRA for advice.
+13. MITRA retrieves relevant data.
+14. Gemini generates a response.
+15. User receives personalized recommendation.
+
+
+===========================================================
+45. DEPLOYMENT
+===========================================================
+
+Deploy to Vercel.
+
+GitHub should be the source repository.
+
+Configure:
+
+Development
+Preview
+Production
+
+Environment variables must be configured through Vercel.
+
+Never commit production secrets.
+
+Production build must pass before deployment.
+
+
+===========================================================
+46. DEVELOPMENT PHASES
+===========================================================
+
+DO NOT attempt everything simultaneously.
+
+PHASE 0
+Foundation
+
+- repository
+- Next.js
+- TypeScript
+- Tailwind
+- Supabase
+- Gemini
+- environment system
+- Vercel
+- CI/build
+- logging
+- error handling
+
+Definition of done:
+Local + production deployment works.
+
+
+PHASE 1
+Authentication + application shell
+
+- Supabase Auth
+- sidebar
+- header
+- routing
+- profile
+- settings
+- protected routes
+
+
+PHASE 2
+Core productivity
+
+- tasks
+- projects
+- goals
+- habits
+- calendar
+- notes
+
+
+PHASE 3
+Dashboard + analytics
+
+- dashboard
+- activity logging
+- productivity metrics
+- charts
+- notifications
+
+
+PHASE 4
+AI Companion
+
+- Gemini service
+- chat interface
+- context retrieval
+- AI recommendations
+- AI summaries
+
+
+PHASE 5
+Intelligence
+
+- recommendation engine
+- deadline risk
+- task prediction
+- goal prediction
+
+
+PHASE 6
+Knowledge Graph
+
+- entities
+- relationships
+- graph visualization
+- AI retrieval from graph
+
+
+PHASE 7
+What-if simulation
+
+- scenario builder
+- deterministic simulation
+- impact analysis
+- AI explanation
+
+
+PHASE 8
+Second Brain
+
+- document uploads
+- document processing
+- semantic search
+- RAG
+- pgvector
+
+
+PHASE 9
+Advanced integrations
+
+Only after the core product is stable:
+
+- Google Calendar
+- Google Drive
+- GitHub
+- Notion
+- Slack
+- Email
+- browser extension
+- mobile application
+
+
+===========================================================
+47. GIT WORKFLOW
+===========================================================
+
+Use meaningful commits.
+
+Examples:
+
+feat: initialize MITRA application
+feat: configure Supabase
+feat: implement authentication
+feat: add task management
+feat: add project management
+feat: add goals
+feat: add habit tracker
+feat: add AI service
+feat: add dashboard analytics
+
+fix:
+refactor:
+test:
+docs:
+
+Do not create enormous commits containing unrelated changes.
+
+
+===========================================================
+48. DOCUMENTATION
+===========================================================
+
+Maintain:
+
+README.md
+
+Include:
+
+- project overview
+- architecture
+- technology stack
+- setup instructions
+- environment variables
+- database setup
+- local development
+- testing
+- deployment
+- AI architecture
+- security considerations
+
+Also maintain:
+
+docs/
+  architecture.md
+  database.md
+  api.md
+  ai.md
+  development.md
+
+
+===========================================================
+49. SECRETS
+===========================================================
+
+NEVER ask the user to paste API keys into source code.
+
+Use environment variables / secure secret configuration.
+
+Required secrets include:
+
+GEMINI_API_KEY
+DATABASE_URL
+SUPABASE_SERVICE_ROLE_KEY
+
+Public configuration can include:
+
+NEXT_PUBLIC_SUPABASE_URL
+NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY
+
+If a secret is accidentally committed:
+
+STOP.
+Remove it from the repository history as appropriate.
+Tell the user to rotate the credential.
+
+
+===========================================================
+50. FREE-TIER AWARENESS
+===========================================================
+
+The project is initially intended to operate using:
+
+Gemini free API tier
+Supabase free tier
+Vercel free tier
+GitHub
+
+Optimize accordingly.
+
+Do not:
+
+- make unnecessary AI requests
+- store duplicate data
+- download large files unnecessarily
+- generate embeddings repeatedly
+- perform expensive background processing without need
+
+Implement basic usage tracking for AI calls.
+
+Create an internal AI usage record containing:
+
+- user
+- model
+- request type
+- timestamp
+- token information if available
+- success/failure
+- latency
+
+Do not store sensitive prompts unnecessarily.
+
+
+===========================================================
+51. AI COST CONTROL
+===========================================================
+
+AI calls must be deliberate.
+
+DO NOT use Gemini for:
+
+- CRUD
+- sorting
+- filtering
+- basic calculations
+- simple database queries
+
+USE Gemini for:
+
+- natural language understanding
+- personalized recommendations
+- summaries
+- planning
+- explanations
+- conversational interaction
+- contextual reasoning
+
+Implement rate-limit handling and exponential backoff where appropriate.
+
+
+===========================================================
+52. SECURITY RULES
+===========================================================
+
+Never:
+
+- expose Gemini key
+- expose database credentials
+- expose Supabase service role
+- trust client-supplied user_id
+- allow arbitrary SQL from AI
+- execute arbitrary AI-generated code
+- bypass authorization
+- store passwords directly
+- log secrets
+
+Always derive authenticated user identity from the server-side auth session.
+
+
+===========================================================
+53. PRODUCT PHILOSOPHY
+===========================================================
+
+MITRA should eventually become:
+
+"An AI that understands how I work, what I am trying to achieve,
+what is currently happening in my life, and what I should do next."
+
+MITRA is therefore not:
+
+A Todo app + ChatGPT.
+
+It is:
+
+A personal data layer
++
+Knowledge graph
++
+Behavioral understanding
++
+Prediction
++
+Simulation
++
+Decision engine
++
+AI coach.
+
+
+===========================================================
+54. IMPORTANT IMPLEMENTATION RULE
+===========================================================
+
+Do not build fake "AI/ML" features just to make the UI look impressive.
+
+For example:
+
+BAD:
+"Productivity Score: 87"
+with no real calculation.
+
+GOOD:
+Calculate a documented score from real activity data.
+
+BAD:
+"AI predicts 92% chance of completing task"
+with random output.
+
+GOOD:
+Use a real deterministic/statistical model and explain the factors.
+
+BAD:
+Knowledge graph made entirely of decorative nodes.
+
+GOOD:
+Graph generated from actual database relationships.
+
+BAD:
+AI says it moved a task but database wasn't changed.
+
+GOOD:
+AI generates a structured tool call and the backend actually performs the
+validated operation.
+
+
+===========================================================
+55. DEFINITION OF DONE
+===========================================================
+
+A feature is NOT complete because its UI exists.
+
+A feature is complete only when:
+
+- UI works
+- database works
+- API/service works
+- authentication works
+- authorization works
+- validation exists
+- error handling exists
+- loading state exists
+- empty state exists
+- responsive UI exists
+- tests exist
+- production build succeeds
+
+
+===========================================================
+56. FIRST TASK
+===========================================================
+
+Before implementing the product:
+
+1. Inspect the repository.
+2. Inspect existing files.
+3. Inspect current Git state.
+4. Create a technical implementation plan.
+5. Identify missing infrastructure.
+6. Create the application foundation.
+7. Configure Supabase.
+8. Configure Gemini.
+9. Configure environment validation.
+10. Create the Next.js application shell.
+11. Create a health-check endpoint.
+12. Verify database connectivity.
+13. Verify Gemini connectivity.
+14. Run tests.
+15. Run production build.
+16. Deploy to Vercel.
+17. Verify production deployment.
+
+Do NOT start implementing all MITRA features immediately.
+
+First establish a stable foundation.
+
+After the foundation passes all checks, proceed phase-by-phase.
+
+
+===========================================================
+57. FINAL QUALITY STANDARD
+===========================================================
+
+Treat MITRA as a serious portfolio/major-project product.
+
+Prioritize:
+
+Correctness
+Security
+Maintainability
+UX
+Performance
+AI reliability
+Data integrity
+Scalability
+
+Do not optimize for the number of features.
+
+Optimize for having a smaller number of features that actually work
+end-to-end.
+
+At the end of every phase, report:
+
+1. What was implemented.
+2. Files changed.
+3. Database changes.
+4. Environment variables required.
+5. Tests performed.
+6. Test results.
+7. Deployment status.
+8. Known limitations.
+9. Recommended next phase.
+
+Do not proceed to the next major phase if the current phase has critical
+failures.
