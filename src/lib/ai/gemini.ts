@@ -1,24 +1,27 @@
 import { GoogleGenerativeAI } from '@google/generative-ai'
 import { env } from '@/lib/validation/env'
 
-if (!env.GEMINI_API_KEY) {
-  throw new Error('GEMINI_API_KEY is not set')
-}
-
-if (!env.GEMINI_MODEL) {
-  throw new Error('GEMINI_MODEL is not set')
-}
-
-const genAI = new GoogleGenerativeAI(env.GEMINI_API_KEY)
-const model = genAI.getGenerativeModel({ model: env.GEMINI_MODEL })
-
 export interface AIResponse {
   text: string
   error?: string
 }
 
+function getGeminiModel() {
+  if (!env.GEMINI_API_KEY) {
+    throw new Error('GEMINI_API_KEY is not set')
+  }
+
+  if (!env.GEMINI_MODEL) {
+    throw new Error('GEMINI_MODEL is not set')
+  }
+
+  const genAI = new GoogleGenerativeAI(env.GEMINI_API_KEY)
+  return genAI.getGenerativeModel({ model: env.GEMINI_MODEL })
+}
+
 export async function generateText(prompt: string): Promise<AIResponse> {
   try {
+    const model = getGeminiModel()
     const result = await model.generateContent(prompt)
     const response = await result.response
     const text = response.text()
@@ -38,6 +41,7 @@ export async function generateStructuredResponse<T>(
   schema: any
 ): Promise<{ data: T | null; error?: string }> {
   try {
+    const model = getGeminiModel()
     const result = await model.generateContent(prompt)
     const response = await result.response
     const text = response.text()
