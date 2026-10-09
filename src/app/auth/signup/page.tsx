@@ -54,18 +54,18 @@ export default function SignupPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
-      <Card className="w-full max-w-md">
-        <CardHeader className="space-y-1">
-          <CardTitle className="text-2xl font-semibold">Create an account</CardTitle>
-          <CardDescription>
+    <div className="min-h-screen flex items-center justify-center bg-[var(--background)] px-4">
+      <Card className="w-full max-w-md shadow-lg">
+        <CardHeader className="space-y-2 pb-6">
+          <CardTitle className="text-3xl font-semibold tracking-tight">Create an account</CardTitle>
+          <CardDescription className="text-base">
             Get started with MITRA
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <form onSubmit={handleSignup} className="space-y-4">
+          <form onSubmit={handleSignup} className="space-y-5">
             <div className="space-y-2">
-              <label htmlFor="email" className="text-sm font-medium">
+              <label htmlFor="email" className="text-sm font-medium text-[var(--foreground)]">
                 Email
               </label>
               <Input
@@ -79,7 +79,7 @@ export default function SignupPage() {
               />
             </div>
             <div className="space-y-2">
-              <label htmlFor="password" className="text-sm font-medium">
+              <label htmlFor="password" className="text-sm font-medium text-[var(--foreground)]">
                 Password
               </label>
               <Input
@@ -94,7 +94,7 @@ export default function SignupPage() {
               />
             </div>
             <div className="space-y-2">
-              <label htmlFor="confirmPassword" className="text-sm font-medium">
+              <label htmlFor="confirmPassword" className="text-sm font-medium text-[var(--foreground)]">
                 Confirm Password
               </label>
               <Input
@@ -109,22 +109,22 @@ export default function SignupPage() {
               />
             </div>
             {error && (
-              <div className="text-sm text-red-600 bg-red-50 p-3 rounded-lg">
+              <div className="text-sm text-[var(--destructive)] bg-[var(--destructive)]/10 p-3 rounded-lg border border-[var(--destructive)]/20">
                 {error}
               </div>
             )}
             {message && (
-              <div className="text-sm text-green-600 bg-green-50 p-3 rounded-lg">
+              <div className="text-sm text-green-600 bg-green-50 p-3 rounded-lg border border-green-200">
                 {message}
               </div>
             )}
-            <Button type="submit" className="w-full" disabled={loading}>
+            <Button type="submit" className="w-full" size="lg" disabled={loading}>
               {loading ? 'Creating account...' : 'Sign up'}
             </Button>
           </form>
-          <div className="mt-4 text-center text-sm">
-            <span className="text-gray-600">Already have an account? </span>
-            <Link href="/auth/login" className="text-gray-900 hover:underline font-medium">
+          <div className="mt-6 text-center text-sm">
+            <span className="text-[var(--muted-foreground)]">Already have an account? </span>
+            <Link href="/auth/login" className="text-[var(--primary)] hover:underline font-medium">
               Sign in
             </Link>
           </div>

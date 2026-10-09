@@ -45,18 +45,18 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
-      <Card className="w-full max-w-md">
-        <CardHeader className="space-y-1">
-          <CardTitle className="text-2xl font-semibold">Welcome back</CardTitle>
-          <CardDescription>
+    <div className="min-h-screen flex items-center justify-center bg-[var(--background)] px-4">
+      <Card className="w-full max-w-md shadow-lg">
+        <CardHeader className="space-y-2 pb-6">
+          <CardTitle className="text-3xl font-semibold tracking-tight">Welcome back</CardTitle>
+          <CardDescription className="text-base">
             Sign in to your MITRA account
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <form onSubmit={handleLogin} className="space-y-4">
+          <form onSubmit={handleLogin} className="space-y-5">
             <div className="space-y-2">
-              <label htmlFor="email" className="text-sm font-medium">
+              <label htmlFor="email" className="text-sm font-medium text-[var(--foreground)]">
                 Email
               </label>
               <Input
@@ -70,7 +70,7 @@ export default function LoginPage() {
               />
             </div>
             <div className="space-y-2">
-              <label htmlFor="password" className="text-sm font-medium">
+              <label htmlFor="password" className="text-sm font-medium text-[var(--foreground)]">
                 Password
               </label>
               <Input
@@ -84,17 +84,17 @@ export default function LoginPage() {
               />
             </div>
             {error && (
-              <div className="text-sm text-red-600 bg-red-50 p-3 rounded-lg">
+              <div className="text-sm text-[var(--destructive)] bg-[var(--destructive)]/10 p-3 rounded-lg border border-[var(--destructive)]/20">
                 {error}
               </div>
             )}
-            <Button type="submit" className="w-full" disabled={loading}>
+            <Button type="submit" className="w-full" size="lg" disabled={loading}>
               {loading ? 'Signing in...' : 'Sign in'}
             </Button>
           </form>
-          <div className="mt-4 text-center text-sm">
-            <span className="text-gray-600">Don't have an account? </span>
-            <Link href="/auth/signup" className="text-gray-900 hover:underline font-medium">
+          <div className="mt-6 text-center text-sm">
+            <span className="text-[var(--muted-foreground)]">Don't have an account? </span>
+            <Link href="/auth/signup" className="text-[var(--primary)] hover:underline font-medium">
               Sign up
             </Link>
           </div>

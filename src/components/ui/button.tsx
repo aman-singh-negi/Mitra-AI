@@ -3,15 +3,15 @@ import { cva, type VariantProps } from 'class-variance-authority'
 import { cn } from '@/lib/utils'
 
 const buttonVariants = cva(
-  'inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-lg text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50',
+  'inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-lg text-sm font-medium transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--ring)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--background)] disabled:pointer-events-none disabled:opacity-50',
   {
     variants: {
       variant: {
-        default: 'bg-gray-900 text-white hover:bg-gray-800',
-        secondary: 'bg-gray-100 text-gray-900 hover:bg-gray-200',
-        ghost: 'hover:bg-gray-100',
-        outline: 'border border-gray-300 bg-transparent hover:bg-gray-50',
-        destructive: 'bg-red-600 text-white hover:bg-red-700',
+        default: 'bg-[var(--primary)] text-[var(--primary-foreground)] hover:bg-[var(--primary)]/90 active:scale-[0.98]',
+        secondary: 'bg-[var(--secondary)] text-[var(--secondary-foreground)] hover:bg-[var(--secondary)]/80 active:scale-[0.98]',
+        ghost: 'hover:bg-[var(--accent)] text-[var(--foreground)] active:scale-[0.98]',
+        outline: 'border border-[var(--border)] bg-transparent hover:bg-[var(--accent)] text-[var(--foreground)] active:scale-[0.98]',
+        destructive: 'bg-[var(--destructive)] text-[var(--destructive-foreground)] hover:bg-[var(--destructive)]/90 active:scale-[0.98]',
       },
       size: {
         default: 'h-10 px-4 py-2',
